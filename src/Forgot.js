@@ -3,28 +3,31 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import env from "./Settings";
 
-const Menu = () => {
+function Forgot() {
 	const history = useHistory();
 	const [mail, setMail] = useState("");
 	const [pwd, setPwd] = useState("");
+	const [pwd2, setPwd2] = useState("");
 
 	let handleSubmit = async (e) => {
 		e.preventDefault();
-		try {
-			let apidata = await axios.post(`${env.api}/signin`, {
-				mail,
-				pwd,
-			});
-			if (apidata.data.code) {
-				window.localStorage.setItem("app_token", apidata.data.token);
-				history.push("/home");
-			} else {
-				alert(apidata.data.message);
+		if (pwd === pwd2) {
+			try {
+				let apidata = await axios.put(`${env.api}/forgot`, {
+					mail,
+					pwd,
+				});
+				setMail("");
+				setPwd("");
+				setPwd2("");
+				if (apidata.data.code) {
+                    history.push("/signin");
+				}
+			} catch (error) {
+				console.log(error);
 			}
-			setMail("");
-			setPwd("");
-		} catch (error) {
-			console.log(error);
+		} else {
+            alert("Password Mismatch. Try Again")
 		}
 	};
 
@@ -32,10 +35,11 @@ const Menu = () => {
 		<div className="container">
 			<div className="row">
 				<div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-					<div className="card text-center border-0 shadow rounded-3 my-5 py-5">
-						<h1 className="m-2">Welcome to Fast Pizza</h1>
-						<div className="card-body m-4">
-							<h3 className="m-4">Sign In</h3>
+					<div className="card border-0 shadow rounded-3 my-5">
+						<div className="card-body p-4 p-sm-5">
+							<h2 className="card-title text-center mb-5 fs-5">
+								Forgot Password
+							</h2>
 							<form onSubmit={handleSubmit}>
 								<div className="form-floating mb-3">
 									<input
@@ -67,12 +71,28 @@ const Menu = () => {
 										Password
 									</label>
 								</div>
+								<div className="form-floating mb-3">
+									<input
+										type="password"
+										className="form-control"
+										id="confirmPassword"
+										placeholder="Password"
+										value={pwd2}
+										onChange={(e) =>
+											setPwd2(e.target.value)
+										}
+										required
+									/>
+									<label htmlFor="confirmPassword">
+										Confirm Password
+									</label>
+								</div>
 								<div className="d-grid py-3">
 									<button
-										className="btn btn-primary btn-login text-uppercase fw-bold"
+										className="btn btn-success btn-login text-uppercase fw-bold"
 										type="submit"
 									>
-										Sign in
+										Change Password
 									</button>
 								</div>
 							</form>
@@ -80,26 +100,17 @@ const Menu = () => {
 								<button
 									type="submit"
 									className="btn btn-danger text-uppercase fw-bold"
-									onClick={() => history.push("/forgot")}
+									onClick={() => history.push("/")}
 								>
-									Forgot Password ?
+									Cancel
 								</button>
 							</div>
-							<hr />
 						</div>
-						Don't have an account, register below
-						<button
-							type="submit"
-							className="btn btn-outline-success m-5 text-uppercase fw-bold"
-							onClick={() => history.push("/signup")}
-						>
-							Register
-						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-};
+}
 
-export default Menu;
+export default Forgot;

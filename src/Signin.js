@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import env from "./Settings";
 
-const Menu = () => {
+function Signin() {
 	const history = useHistory();
 	const [mail, setMail] = useState("");
 	const [pwd, setPwd] = useState("");
@@ -11,15 +11,16 @@ const Menu = () => {
 	let handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			let apidata = await axios.post(`${env.api}/signin`, {
+			let api = await axios.post(`${env.api}/signin`, {
 				mail,
 				pwd,
 			});
-			if (apidata.data.code) {
-				window.localStorage.setItem("app_token", apidata.data.token);
+			console.log(api);
+			if (api.data.code) {
+				window.localStorage.setItem("app_token", api.data.token);
 				history.push("/home");
 			} else {
-				alert(apidata.data.message);
+				alert(api.data.message);
 			}
 			setMail("");
 			setPwd("");
@@ -31,11 +32,12 @@ const Menu = () => {
 	return (
 		<div className="container">
 			<div className="row">
-				<div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-					<div className="card text-center border-0 shadow rounded-3 my-5 py-5">
-						<h1 className="m-2">Welcome to Fast Pizza</h1>
-						<div className="card-body m-4">
-							<h3 className="m-4">Sign In</h3>
+				<div className="col-sm-9 col-md-7 col-lg-5 mx-auto" key="fhhji">
+					<div className="card border-0 shadow rounded-3 my-5">
+						<div className="card-body p-4 p-sm-5">
+							<h2 className="card-title text-center mb-5 fs-5">
+								Sign In
+							</h2>
 							<form onSubmit={handleSubmit}>
 								<div className="form-floating mb-3">
 									<input
@@ -85,21 +87,22 @@ const Menu = () => {
 									Forgot Password ?
 								</button>
 							</div>
-							<hr />
+							<hr className="my-4" />
+							<div className="d-grid py-3">
+								<button
+									type="submit"
+									className="btn btn-outline-success text-uppercase fw-bold"
+									onClick={() => history.push("/")}
+								>
+									Home
+								</button>
+							</div>
 						</div>
-						Don't have an account, register below
-						<button
-							type="submit"
-							className="btn btn-outline-success m-5 text-uppercase fw-bold"
-							onClick={() => history.push("/signup")}
-						>
-							Register
-						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-};
+}
 
-export default Menu;
+export default Signin;
