@@ -33,13 +33,8 @@ const Home = () => {
 
 	let handleCart = (id) => {
 		let ix = data.find((e) => e._id === id);
-		let index = DataSet.find((el) => el._id === id);
-		if (index && index._id === ix._id) {
-			ix.qty++;
-		} else {
-			ix.qty++;
-			setDataSet([...DataSet, ix]);
-		}
+		ix.qty++;
+		setDataSet([...DataSet, ix]);
 	};
 
 	return (
@@ -69,6 +64,7 @@ const Home = () => {
 								<div
 									className="text-center p-3 m-1"
 									style={{ width: "250px" }}
+									key={e._id}
 								>
 									<h6>{e.name}</h6>
 									<img
@@ -81,6 +77,7 @@ const Home = () => {
 										type="submit"
 										className="m-2 btn btn-outline-dark"
 										onClick={() => handleCart(e._id)}
+										disabled={DataSet.some((el) => el._id === e._id)}
 									>
 										Add to Cart
 									</button>
@@ -101,6 +98,7 @@ const Home = () => {
 								<div
 									className="text-center p-3 m-1"
 									style={{ width: "250px" }}
+									key={e._id}
 								>
 									<h6>{e.name}</h6>
 									<img
@@ -113,6 +111,7 @@ const Home = () => {
 										type="submit"
 										className="m-2 btn btn-outline-dark"
 										onClick={() => handleCart(e._id)}
+										disabled={DataSet.some((el) => el._id === e._id)}
 									>
 										Add to Cart
 									</button>

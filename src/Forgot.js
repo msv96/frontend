@@ -17,12 +17,10 @@ function Forgot() {
 					mail,
 					pwd,
 				});
+				console.log(apidata);
 				setMail("");
 				setPwd("");
 				setPwd2("");
-				if (apidata.data.code) {
-                    history.push("/signin");
-				}
 			} catch (error) {
 				console.log(error);
 			}
