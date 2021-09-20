@@ -1,6 +1,6 @@
 const Settings = () => {
 	return {
-		api: "http://localhost:3001",
+		api: "https://b25g-backend.herokuapp.com",
 	};
 };
 
